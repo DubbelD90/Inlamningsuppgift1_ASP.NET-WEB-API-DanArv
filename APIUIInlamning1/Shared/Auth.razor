@@ -1,0 +1,17 @@
+﻿@code {
+    private string token { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            token = await sessionStorage.GetItemAsync<string>("token");
+        }
+        catch{}
+
+        if (token == null)
+        {
+            NavManager.NavigateTo("/login");
+        }
+    }
+}

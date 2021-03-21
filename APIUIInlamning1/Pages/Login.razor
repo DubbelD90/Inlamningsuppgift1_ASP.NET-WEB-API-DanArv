@@ -1,0 +1,45 @@
+﻿@page "/login"
+
+<h3>Login</h3>
+<EditForm Model="model" OnSubmit="OnSubmit">
+    <InputText type="text" id="email" @bind-Value="model.Email" placeholder="Email" />
+    <InputText type="password" id="password" @bind-Value="model.Password" placeholder="Password" />
+    <button class="btn btn-success" type="submit">Login</button>
+    <div>@errorText</div>
+</EditForm>
+
+@code {
+    private HttpResponseMessage result = new HttpResponseMessage();
+    private string token { get; set; }
+    private LoginModel model { get; set; }
+    private string errorText;
+
+    protected override async Task OnInitializedAsync()
+    {
+        model = new LoginModel();
+
+        token = await sessionStorage.GetItemAsync<string>("token");
+    }
+
+    private async Task OnSubmit()
+    {
+
+        result = await Http.PostAsJsonAsync<LoginModel>("https://localhost:44335/api/Users/login",
+            new LoginModel { Email = $"{model.Email}", Password = $"{model.Password}" });
+
+        if (!result.IsSuccessStatusCode)
+        {
+            errorText = "Login failed. Invalid E-mail or Password";
+        }
+        else
+        {
+            var data = JsonConvert.DeserializeObject<dynamic>(await result.Content.ReadAsStringAsync());
+            await sessionStorage.SetItemAsync("token", data.token.ToString());
+            NavManager.NavigateTo("/");
+        }
+
+    }
+
+}
+
+    

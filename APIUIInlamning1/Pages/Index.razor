@@ -1,0 +1,23 @@
+﻿@page "/"
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+@*@code {
+    private HttpResponseMessage result;
+    private LoginModel model;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        result = await Http.PostAsJsonAsync<LoginModel>("https://localhost:44335/api/Users/login", new LoginModel { Email = $"{model.Email}", Password = $"{model.Password}" });
+
+        var data = JsonConvert.DeserializeObject<dynamic>(await result.Content.ReadAsStringAsync());
+        await localstorage.SetItemAsync("token", data.token);
+
+    }
+}*@

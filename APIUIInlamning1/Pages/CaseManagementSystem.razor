@@ -1,0 +1,72 @@
+﻿@page "/casemanagement"
+<Auth />
+
+<h3>Case Management</h3>
+@if (cases == null)
+{
+    <p>No cases found</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Handler</th>
+                <th>Client</th>
+                <th>Created</th>
+                <th>Changed</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var showCase in cases)
+            {
+                <tr>
+                    <td>@showCase.Id</td>
+                    <td>@showCase.StatusId</td>
+                    <td>@showCase.UserId</td>
+                    <td>@showCase.ClientId</td>
+                    <td>@showCase.Created</td>
+                    <td>@showCase.Changed</td>
+                </tr>
+            }
+        </tbody>
+        <div>@message</div>
+    </table>
+}
+
+@code {
+    private IEnumerable<CaseModel> cases;
+    private HttpResponseMessage result;
+    private LoginModel model;
+    private string message;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        try
+        {
+            Http.DefaultRequestHeaders.Remove("Authorization");
+            Http.DefaultRequestHeaders.Add("Authorization", $"Bearer { await sessionStorage.GetItemAsync<string>("token") }");
+            result = await Http.GetAsync("https://localhost:44335/api/Cases");
+
+            if (result.IsSuccessStatusCode)
+            {
+                var data = await result.Content.ReadAsStringAsync();
+                cases = JsonConvert.DeserializeObject<IEnumerable<CaseModel>>(data);
+            }
+            else
+            {
+                message = $"Error: {result.StatusCode}";
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+    }
+}
+

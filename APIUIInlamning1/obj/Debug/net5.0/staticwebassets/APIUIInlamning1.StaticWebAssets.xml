@@ -1,0 +1,4 @@
+﻿<StaticWebAssets Version="1.0">
+  <ContentRoot BasePath="/" Path="C:\Users\dcloc\Desktop\Daniel\Skola\Webbutvecklare inom .NET\ASP.NET WEB API\Inlämningsuppgift 1\Inlamningsuppgift1_ASP.NET WEB API DanArv\APIUIInlamning1\bin\Debug\net5.0\wwwroot\" />
+  <ContentRoot BasePath="/" Path="C:\Users\dcloc\Desktop\Daniel\Skola\Webbutvecklare inom .NET\ASP.NET WEB API\Inlämningsuppgift 1\Inlamningsuppgift1_ASP.NET WEB API DanArv\APIUIInlamning1\obj\Debug\net5.0\scopedcss\bundle\" />
+</StaticWebAssets>

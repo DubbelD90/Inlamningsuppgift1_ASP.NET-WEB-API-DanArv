@@ -1,0 +1,60 @@
+﻿@page "/add-client"
+<Auth />
+
+<h3>Add Client</h3>
+
+<EditForm Model="client" OnSubmit="@AddClientAsync">
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="First Name" @bind="client.FirstName" required />
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Last Name" @bind="client.LastName" required />
+    </div>
+    <div class="form-group">
+        <input type="tel" class="form-control" placeholder="Phonenumber" @bind="client.Phone" required />
+    </div>
+    <div>@message</div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-success">Add Client</button>
+    </div>
+
+
+</EditForm>
+
+@code {
+    private AddClientModel client;
+    private HttpResponseMessage result;
+    private string message;
+
+    protected override void OnInitialized()
+    {
+        client = new AddClientModel();
+    }
+
+    private async Task AddClientAsync()
+    {
+
+        try
+        {
+            client = new AddClientModel()
+            {
+                FirstName = client.FirstName,
+                LastName = client.LastName,
+                Phone = client.Phone
+            };
+
+            result = await Http.PostAsJsonAsync<AddClientModel>("https://localhost:44335/api/Clients", client);
+
+            if (result.IsSuccessStatusCode)
+            {
+                message = $"User Created";
+            }
+            else
+            {
+                message = $"Error, use not created";
+            }
+        }
+        catch { }
+
+    }
+}
